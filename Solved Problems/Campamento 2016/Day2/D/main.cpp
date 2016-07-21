@@ -51,7 +51,7 @@ int main()
 		cout << -1;return 0;	
 	}
 
-	double ini=0,end=2*1000000000+1;
+	double ini=0,end=1000000001;
 	if(!check(end))
 	{
 		cout << -1;return 0;
@@ -62,7 +62,7 @@ int main()
 		double value = (end+ini)/2;
 		//printf("%.15f\n",value);
 		bool b = check(value);
-		if(fabs(value-last) < 0.0000000001)
+		if(fabs(value-last) < 0.000000001)
 		{
 			printf("%.10f",value);
 			return 0;
