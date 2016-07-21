@@ -10,18 +10,18 @@ vector<ii> parts;
 
 bool check(double T)
 {
-	vector<double> postpos(parts.size(),0);
+	//vector<double> postpos(parts.size(),0);
 	double anterior;
 	double lala = -maxd;
 	for (int i=0;i<parts.size();i++)
 	{
-		postpos[i] = parts[i].first + ((double)parts[i].second) * T;
+		double postpos = parts[i].first + ((double)parts[i].second) * T;
 		
-		if(parts[i].second > 0 && postpos[i]>lala)
+		if(parts[i].second > 0 && postpos>lala)
 		{
-			lala = postpos[i];
+			lala = postpos;
 		}
-		else if(postpos[i] <= lala && parts[i].second < 0)
+		else if(postpos <= lala && parts[i].second < 0)
 		{
 			return true;
 		}
@@ -33,13 +33,13 @@ bool check(double T)
 int main()
 {
 	int ps;
-	cin >> ps;
+	scanf("%d",&ps);
 
 	int bigbang = 2;
 	while(ps--)
 	{
 		int x,v;
-		cin >> x >> v;
+		scanf("%d %d",&x,&v);
 		parts.push_back(make_pair(x,v));
 		//cout << x << " " << v << endl;
 		if(v > 0 && bigbang==2)bigbang--;
@@ -51,7 +51,7 @@ int main()
 		cout << -1;return 0;	
 	}
 
-	double ini=0,end=2*1000000000+1;
+	double ini=0,end=1000000000+1;
 	if(!check(end))
 	{
 		cout << -1;return 0;
@@ -62,7 +62,7 @@ int main()
 		double value = (end+ini)/2;
 		//printf("%.15f\n",value);
 		bool b = check(value);
-		if(fabs(value-last) < 0.0000000001)
+		if(fabs(value-last) < 0.000000001)
 		{
 			printf("%.10f",value);
 			return 0;
