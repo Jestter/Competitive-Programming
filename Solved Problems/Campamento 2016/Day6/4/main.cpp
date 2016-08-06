@@ -2,7 +2,7 @@
  
 using namespace std;
  
-#define MAX_V 305
+#define MAX_V 1000
 #define INF 999999999
  
 typedef vector<long> vi;
@@ -31,7 +31,6 @@ int main()// inside int main(): set up ‘res’, ‘s’, and ‘t’ with appr
 {
  	int tc;
  	cin >> tc;
-	maggtriz.assign(1000,vi(1000,0));
  
 	int persons, taxis;
 	long speed,tlimit;
@@ -41,34 +40,35 @@ int main()// inside int main(): set up ‘res’, ‘s’, and ‘t’ with appr
 		scanf("%d", &taxis);
 		scanf("%ld", &speed);
 		scanf("%ld", &tlimit);
-
+		maggtriz.clear();
+		maggtriz.assign(1000,vi(1000,0));
 		long total = taxis+persons;
 		mf = 0;
 		res.assign(total+5,vector<long>());
 		s = 0;
 		t = total+1;
 
-		vector<pair<long,long> > p_persons;
+		vector<pair<long long,long long> > p_persons;
 		for (int i = 0; i < persons; ++i)
 		{
-			long x,y;
-			scanf("%ld %ld",&x,&y);
+			long long x,y;
+			scanf("%lld %lld",&x,&y);
 			p_persons.push_back(make_pair(x,y));
 		}
 
 		for (int i = 1; i <= taxis; ++i)
 		{
-			long x,y;
-			scanf("%ld %ld",&x,&y);
+			long long x,y;
+			scanf("%lld %lld",&x,&y);
 			for (int j = 1; j <= persons; ++j)
 			{
-				long distance = abs(x-p_persons[j-1].first)+abs(y-p_persons[j-1].second);
-				if(distance/speed <= tlimit)
+				long long distance = abs(x-p_persons[j-1].first)+abs(y-p_persons[j-1].second);
+				if(distance*200 <= tlimit*speed)
 				{
 					res[i].push_back(taxis+j);
 					res[taxis+j].push_back(i);
 					maggtriz[i][taxis+j] = 1;
-					maggtriz[taxis+j][i] = 1;
+					maggtriz[taxis+j][i] = 0;
 				}
 			}
 		}
@@ -78,13 +78,13 @@ int main()// inside int main(): set up ‘res’, ‘s’, and ‘t’ with appr
 			res[s].push_back(i);
 			res[i].push_back(s);
 		 	maggtriz[s][i] = 1;
-		  	maggtriz[i][s] = 1;
+		  	maggtriz[i][s] = 0;
 		}
 		for(int i = taxis+1; i <= persons+taxis ; i++)
 		{ 
 			res[t].push_back(i);
 			res[i].push_back(t); 
-			maggtriz[t][i] = 1; 
+			maggtriz[t][i] = 0; 
 			maggtriz[i][t] = 1;
 		}
 
@@ -107,6 +107,6 @@ int main()// inside int main(): set up ‘res’, ‘s’, and ‘t’ with appr
 		if (f == 0) break; // we cannot send any more flow (‘f’ = 0), terminate
 		mf += f; // we can still send a flow, increase the max flow!
 		}
-		printf("%d\n", mf);
+		printf("%ld\n", mf);
 	}
 }
