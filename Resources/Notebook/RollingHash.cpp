@@ -8,12 +8,16 @@ struct RollingHash
 	long long hashValue;
 	long ini;
 	long end;
+	long long base;
 
 	RollingHash(const string &s,long hlength):L(hlength),s(s),ini(0),end(L-1),hashValue(0)
 	{
-		for (long i = 0; i < L; ++i)
+		base = 1;
+		for (long i = L-1; i >= 0; --i)
 		{
-			hashValue += (s[i])<<((L-1) - i);
+			//hashValue += (s[i])<<((L-1) - i);
+			hashValue += s[i] * base;
+			if(i!=0)base*=127;
 		}
 	}
 
@@ -23,8 +27,8 @@ struct RollingHash
 	long long nextHashValue()
 	{
 		if(end == s.length()) return hashValue;
-		hashValue -= (s[ini]) << (L-1);
-		hashValue*=2;
+		hashValue -= (s[ini]) * base;//<< (L-1);
+		hashValue*=127;
 		hashValue+= (s[end+1]);
 		ini++;
 		end++;
