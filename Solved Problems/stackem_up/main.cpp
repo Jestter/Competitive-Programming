@@ -66,19 +66,28 @@ int main()
 			deck[1][i] = i;
 		}
 
+
+
 		int usin = 0;
 		char sh;
+		scanf("%c",&sh);
 		while(scanf("%c",&sh) != EOF)
 		{
-			int ant = (int)sh;
-			scanf("%c",&sh);
-			if(ant == (int)sh)break;
-			//cout << ((int)sh-'0') << endl;
+			//cout << ((int)sh) << endl;
+			if(sh == '\n')break;
+			int num = 0;
+			while(sh != '\n')
+			{
+				num*=10;
+				num+=((int)sh-'0');
+				if(scanf("%c",&sh)== EOF)break;
+			}
+			//cout << num << endl;
 
 			int usin2 = (usin+1)%2;
 			for (int i = 0; i < 52; ++i)
 			{
-				deck[usin2][shuffles[((int)sh-'0')-1][i]] = deck[usin][i];
+				deck[usin2][shuffles[num-1][i]] = deck[usin][i];
 
 				//cout << "deck["<<(shuffles[((int)sh-'0')-1][i])<< "] = " << deck[usin][i] << endl;
 			}
