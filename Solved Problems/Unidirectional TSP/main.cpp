@@ -6,7 +6,7 @@ int main()
     int m,n;
     while(cin >> m >> n)
     {
-    	pair<int,int> matrix[m][n]; // desde,valor
+    	pair<int,int> matrix[m][n]; // 	desde,valor
 
     	for (int i = 0; i < m; ++i)
     	{
@@ -17,31 +17,47 @@ int main()
     		}
     	}
 
-    	for (int i = m-2; i >= 0; ++i)
+    	for (int i = n-2; i >= 0; --i)
     	{
-    		for (int j = 0; j < n; ++j)
+    		for (int j = 0; j < m; ++j)
     		{
-    			matrix[i][j].second += matrix[i+1][(j-1+n)%n].second;
-    			matrix[i][j].first = (j-1+n)%n;
+    			int val = matrix[(j-1+m)%m][i+1].second;
+    			matrix[j][i].first = (j-1+m)%m;
+    			
     			for (int k = 0; k <= 1; ++k)
     			{
-    				if(matrix[i][j].second > matrix[i+1][(j+k+n)%n].second)
+    				if(val > matrix[(j+k+m)%m][i+1].second)
     				{
-    					matrix[i][j].second = matrix[i+1][(j+k+n)%n].second;
-    					matrix[i][j].first = (j+k+n)%n;
+    					val = matrix[(j+k+m)%m][i+1].second;
+    					matrix[j][i].first = (j+k+m)%m;
+    				}
+
+    				else if(val >= matrix[(j+k+m)%m][i+1].second
+    					&& matrix[j][i].first > (j+k+m)%m)
+    				{
+    					val = matrix[(j+k+m)%m][i+1].second;
+    					matrix[j][i].first = (j+k+m)%m;
     				}
     			}
+
+    			matrix[j][i].second += val;
     		}
     	}
-    	
-    	int best = 1<<31;
 
-    	for (int j = 0; j < n; ++j)
+    	int best = matrix[0][0].second;
+    	int bestidx = 0;
+    	for (int j = 1; j < m; ++j)
     	{
-    		best = min(matrix[0][j].second,best);
+    		if(best > matrix[j][0].second) {best = matrix[j][0].second;bestidx = j;}
     	}
 
-    	cout << best << endl;	
+		for (int i = 0; i < n; ++i)
+		{
+			cout << (bestidx+1) << (i+1==n?"":" ");
+			bestidx = matrix[bestidx][i].first;
+		}
+		cout << endl;
+		cout << best << endl;
     }
     
     return 0;
