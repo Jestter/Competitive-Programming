@@ -6,43 +6,39 @@
 //   INPUT: a vector of integers
 //   OUTPUT: a vector containing the longest increasing subsequence
 
-#include <iostream>
-#include <vector>
-#include <algorithm>
-
 using namespace std;
 
-typedef vector<int> VI;
-typedef pair<int,int> PII;
-typedef vector<PII> VPII;
+typedef vector<int> vi;
 
-#define STRICTLY_INCREASNG
+vi LIS(vi v)
+{
+   	vi p(v.size(),-1); //parents
+   	vi m(v.size()+1,0); //increasing ordered list
+   	int l = 0;
 
-VI LongestIncreasingSubsequence(VI v) {
-  VPII best;
-  VI dad(v.size(), -1);
-  
-  for (int i = 0; i < v.size(); i++) {
-#ifdef STRICTLY_INCREASNG
-    PII item = make_pair(v[i], 0);
-    VPII::iterator it = lower_bound(best.begin(), best.end(), item);
-    item.second = i;
-#else
-    PII item = make_pair(v[i], i);
-    VPII::iterator it = upper_bound(best.begin(), best.end(), item);
-#endif
-    if (it == best.end()) {
-      dad[i] = (best.size() == 0 ? -1 : best.back().second);
-      best.push_back(item);
-    } else {
-      dad[i] = dad[it->second];
-      *it = item;
-    }
-  }
-  
-  VI ret;
-  for (int i = best.back().second; i >= 0; i = dad[i])
-    ret.push_back(v[i]);
-  reverse(ret.begin(), ret.end());
-  return ret;
+   	for (int i = 0; i < v.size(); ++i)
+   	{
+   		int lo=1,hi=l;
+
+   		while(lo <= hi)
+   		{
+   			int mid = ceil((lo+hi)/2);
+			if( v[m[mid]] < v[i]) lo = mid+1;
+			else hi = mid-1;
+   		}
+   		int newL = lo;
+   		p[i] = m[newL-1];
+   		m[newL] = i;
+
+   		l = max(newL,l);
+   	}
+   	vi s(l,0);
+   	int k = m[l];
+   	for (int i = l-1; i >=0; --i)
+   	{
+   		s[i] = v[k];
+   		k = p[k];
+   	}
+
+    return s; //return longest increasing subsequence
 }
